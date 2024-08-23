@@ -51,8 +51,9 @@ const ArticleView = () => {
           </p>
           <p>
             {article.blocks?.requestedBodyBlocks['body:latest'] &&
+              article.blocks?.requestedBodyBlocks['body:latest'][0] &&
               article.blocks?.requestedBodyBlocks['body:latest'][0]
-                .bodyTextSummary}
+                ?.bodyTextSummary}
           </p>
         </article>
       )}
