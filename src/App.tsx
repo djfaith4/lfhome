@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { RouterProvider } from 'react-aria-components'
+import {
+  Route,
+  Routes,
+  type NavigateOptions,
+  useNavigate
+} from 'react-router-dom'
+import Home from './components/Home'
+import ArticleView from './components/ArticleView'
+import ApiError from './components/ApiError'
+import NotFound from './components/NotFound'
+import Layout from './components/Layout'
+import About from './components/About'
+import { ErrorBoundary } from './common/ErrorBoundary'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+declare module 'react-aria-components' {
+  interface RouterConfig {
+    routerOptions: NavigateOptions
+  }
 }
 
-export default App;
+function App() {
+  let navigate = useNavigate()
+
+  return (
+    <ErrorBoundary>
+      <div className="App">
+        <RouterProvider navigate={navigate}>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Home />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/article/*" element={<ArticleView />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/api-error" element={<ApiError />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        </RouterProvider>
+      </div>
+    </ErrorBoundary>
+  )
+}
+
+export default App
