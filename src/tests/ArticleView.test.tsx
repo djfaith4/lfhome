@@ -1,46 +1,44 @@
-import { screen, waitFor } from '../common/test-utils'
-import { render } from '@testing-library/react'
-import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { screen, render } from '../common/test-utils'
+import { Route, Routes } from 'react-router-dom'
 import ArticleView from '../components/ArticleView'
 import NotFound from '../components/NotFound'
 
-test('renders single article page', async () => {
-  render(
-    <MemoryRouter initialEntries={['/article/business/article/id']}>
+describe('ArticleView', () => {
+  test('renders single article page', async () => {
+    render(
       <Routes>
         <Route path="/article/*" element={<ArticleView />} />
-      </Routes>
-    </MemoryRouter>
-  )
-  const articleTitle = await screen.findByText(/Big Debate Coming Up/i)
-  await waitFor(() => expect(articleTitle).toBeInTheDocument())
-})
+      </Routes>,
+      { initialEntries: ['/article/business/article/id'] }
+    )
+    const articleTitle = await screen.findByText(/Big Debate Coming Up/i)
+    expect(articleTitle).toBeInTheDocument()
+  })
 
-test('displays article content', async () => {
-  render(
-    <MemoryRouter initialEntries={['/article/business/article/id']}>
+  test('displays article content', async () => {
+    render(
       <Routes>
         <Route path="/article/*" element={<ArticleView />} />
-      </Routes>
-    </MemoryRouter>
-  )
-  const articleContent = await screen.findByText(
-    /Good morning. Joe Biden and Donald Trump will face off/i
-  )
-  await waitFor(() => expect(articleContent).toBeInTheDocument())
-})
+      </Routes>,
+      { initialEntries: ['/article/business/article/id'] }
+    )
+    const articleContent = await screen.findByText(
+      /Good morning. Joe Biden and Donald Trump will face off/i
+    )
+    expect(articleContent).toBeInTheDocument()
+  })
 
-test('renders Not Found page if article does not exist', async () => {
-  render(
-    <MemoryRouter initialEntries={['/article/bad/id']}>
+  test('renders Not Found page if article does not exist', async () => {
+    render(
       <Routes>
         <Route path="/article/*" element={<ArticleView />} />
         <Route path="*" element={<NotFound />} />
-      </Routes>
-    </MemoryRouter>
-  )
-  const errorMsg = await screen.findByText(
-    /It seems the item you are looking for does not exist/i
-  )
-  await waitFor(() => expect(errorMsg))
+      </Routes>,
+      { initialEntries: ['/article/bad/id'] }
+    )
+    const errorMsg = await screen.findByText(
+      /It seems the item you are looking for does not exist/i
+    )
+    expect(errorMsg).toBeInTheDocument()
+  })
 })

@@ -1,25 +1,26 @@
-import { Link } from 'react-aria-components'
 import { Outlet } from 'react-router-dom'
+import Navbar from './Navbar'
+import { isDarkModeEnabled, setDarkModeEnabled } from '../common/utils'
+import { useState } from 'react'
 
 const Layout = () => {
+  const [useDarkMode, setDarkMode] = useState(isDarkModeEnabled)
+
+  const updateDarkModeEnabled = (darkMode: boolean) => {
+    setDarkModeEnabled(darkMode)
+    setDarkMode(darkMode)
+  }
   return (
-    <div className="flex flex-col justify-center px-4">
-      <header>
-        <h1>Simple News Site</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li className="py-3">
-              <Link href="/about">About</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <Outlet />
-      </main>
+    <div className={useDarkMode ? 'dark' : ''}>
+      <div className="flex flex-col bg-gray-50 dark:bg-gray-900 dark:text-white min-h-screen">
+        <Navbar
+          useDarkMode={useDarkMode}
+          updateDarkModeEnabled={updateDarkModeEnabled}
+        />
+        <main className="px-4">
+          <Outlet />
+        </main>
+      </div>
     </div>
   )
 }

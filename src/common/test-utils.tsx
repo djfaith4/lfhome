@@ -4,10 +4,15 @@ import { PropsWithChildren, ReactElement } from 'react'
 import { MemoryRouter, MemoryRouterProps } from 'react-router-dom'
 import App from '../App'
 
-const customRender = (ui: ReactElement = <App />, options = {}) =>
+const customRender = (
+  ui: ReactElement = <App />,
+  options = { initialEntries: ['/'] }
+) =>
   render(ui, {
     wrapper: ({ children, ...props }: PropsWithChildren<MemoryRouterProps>) => (
-      <MemoryRouter {...props}>{children}</MemoryRouter>
+      <MemoryRouter initialEntries={options.initialEntries} {...props}>
+        {children}
+      </MemoryRouter>
     ),
     ...options
   })

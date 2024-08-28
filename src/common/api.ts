@@ -10,7 +10,7 @@ export const getData = async (path: string, params: ApiParams = {}) => {
   params['api-key'] = process.env.REACT_APP_API_KEY
   const searchParams = new URLSearchParams(params)
   const paramsAsString = searchParams.toString()
-  console.log(`Requesting: ${API_BASE}${path}?${paramsAsString}`)
+  //console.log(`Requesting: ${API_BASE}${path}?${paramsAsString}`)
 
   await axios
     .get(`${API_BASE}${path}?${paramsAsString}`)
@@ -18,6 +18,8 @@ export const getData = async (path: string, params: ApiParams = {}) => {
       resp = response.data.response
       //console.log(resp)
     })
-    .catch((error) => console.log('get error', error))
+    .catch((error) => {
+      //console.log('get error', error)
+    })
   return resp
 }
